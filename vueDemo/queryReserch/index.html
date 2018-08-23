@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"  href="./css/main.css" >
+    <title>调查问卷</title>
+</head>
+<body>
+    <div id="app">
+        <div class="page">
+            <div class="content" v-show="pageNum===1">
+                    <label class="question">1. 请问您的性别是:</label>
+                    <label class="select one"><input type="radio" name="sex" value="man" v-model="resultRadio">男</label>
+                    <label class="select"><input type="radio" name="sex" value="woman" v-model="resultRadio">女</label>
+                    <label class="select"><input type="radio" name="sex" value="secret" v-model="resultRadio">保密</label>
+                    
+            </div>
+            <div class="content" v-show="pageNum===2">
+                <label class="question">2. 请选择您的兴趣爱好:</label>
+                <label class="select box"><input type="checkbox" name="sex" value="book" v-model="resultCheckbox">看书</label>
+                <label class="select box"><input type="checkbox" name="sex" value="swim" v-model="resultCheckbox">游泳</label>
+                <label class="select box"><input type="checkbox" name="sex" value="run" v-model="resultCheckbox">跑步</label>
+                <label class="select box"><input type="checkbox" name="sex" value="movie" v-model="resultCheckbox">看电影</label>
+                <label class="select box"><input type="checkbox" name="sex" value="music" v-model="resultCheckbox">听音乐</label>
+            </div>
+            <div class="content" v-show="pageNum===3">
+                    <label class="question">3. 请介绍一下自己:</label>
+                    <textarea name="selfIntro" id="selfIntro" v-model="resultText" placeholder="不少于100字"></textarea>
+                </div>
+            
+            <button-component @next="getPageNum"
+                              @before="getPageNum"
+                              @reset="getPageNumAndReset"
+                              :result-radio="resultRadio"
+                              :result-checkbox="resultCheckbox"
+                              :result-text="resultText"></button-component>
+           
+                
+            
+        </div>
+    </div>
+    
+<!-- 以下为模板 -->
+
+<!-- 按钮区域 -->
+    <script type="text/x-template" id="button-component">
+        <div class="btns">
+                <button  @click = "previousPage" v-if = "current_page !== 1">上一步</button>
+                <button :disabled="setDisabledRadio" :class="{btnDisabled:setDisabledRadio}" @click = "nextPage" v-if="current_page !==3">下一步</button>
+                <button :disabled="setDisabledRadio" :class="{btnDisabled:setDisabledRadio}" v-if = "current_page === 3">提交</button>
+                <button @click = "resetPage">重置</button>
+        </div>
+    </script>
+
+
+
+
+<!-- 以下js代码 -->
+    <script src="./lib/vue.js"></script>
+    <script src="./index.js"></script>
+    <script>
+        // Vue.component('button-component',{
+        //          template:'#button-component'
+        //         })
+        var app = new Vue({
+                  el:'#app',
+                  data:{
+                      pageNum:1,
+                      resultRadio:[],
+                      resultCheckbox:[],
+                      resultText:""
+                  },
+                  methods:{
+                    getPageNum:function(current_page){
+                        this.pageNum = current_page;
+                    },
+                    getPageNumAndReset:function(current_page,resultRadio,resultCheckbox,resultText){
+                        this.pageNum = current_page;
+                        this.resultRadio = resultRadio;
+                        this.resultCheckbox = resultCheckbox;
+                        this.resultText = resultText;
+                        
+                    }
+                  }
+                 })
+                 
+    </script>
+
+</body>
+</html>
